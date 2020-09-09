@@ -35,14 +35,14 @@ namespace HelloWorld
             //This is how we make it seem as if the player is fighting different enemies
             switch (roomNum)
             {
-                case 0:
+                case 0
                     {
                         enemyHealth = 100;
                         enemyAttack = 20;
                         enemyDefense = 5;
                         enemyName = "Wizard";
                     }
-                case 1:
+                case 1
                     {
                         enemyHealth = 80;
                         enemyAttack = 30;
@@ -60,7 +60,7 @@ namespace HelloWorld
             }
 
             //Loops until the player or the enemy is dead
-            while(_playerHealth >= 0 || enemyHealth >= 0)
+            while(_playerHealth > 0 && enemyHealth > 0)
             {
                 //Displays the stats for both charactersa to the screen before the player takes their turn
                 PrintStats(_playerName, _playerHealth, _playerDamage, _playerDefense);
@@ -68,11 +68,11 @@ namespace HelloWorld
 
                 //Get input from the player
                 char input;
-                GetInput(input, "Attack", "Defend");
+                GetInput(out input, "Attack", "Defend");
                 //If input is 1, the player wants to attack. By default the enemy blocks any incoming attack
                 if(input == '1')
                 {
-                    BlockAttack(enemyHealth, _playerDamage, enemyDefense);
+                    BlockAttack( enemyHealth, _playerDamage, enemyDefense);
                     Console.WriteLine("You dealt " + _playerDamage + " damage.");
                     Console.Write("> ");
                     Console.ReadKey();
@@ -112,7 +112,7 @@ namespace HelloWorld
             opponentHealth -= damage;
         }
         //Scales up the player's stats based on the amount of turns it took in the last battle
-        void LevelUp(int turnCount)
+        void UpgradeStats(int turnCount)
         {
             //Subtract the amount of turns from our maximum level scale to get our current level scale
             int scale = levelScaleMax - turnCount;
@@ -127,7 +127,7 @@ namespace HelloWorld
         //Gets input from the player
         //Out's the char variable given. This variables stores the player's input choice.
         //The parameters option1 and option 2 displays the players current chpices to the screen
-        void GetInput(out char input,string option1, string option2)
+        void GetInput(out char input,string option1, string option2, string query)
         {
             //Initialize input
             input = ' ';
@@ -138,6 +138,7 @@ namespace HelloWorld
                 Console.Write("> ");
                 input = Console.ReadKey().KeyChar;
         }
+
 
         //Prints the stats given in the parameter list to the console
         void PrintStats(string name, int health, int damage, int defense)
@@ -154,7 +155,7 @@ namespace HelloWorld
             //Displays context based on which room the player is in
             switch (roomNum)
             {
-                case 0:
+                case V:
                     {
                         Console.WriteLine("A wizard blocks your path");
                     }
@@ -176,8 +177,8 @@ namespace HelloWorld
             //Starts a battle. If the player survived the battle, level them up and then proceed to the next room.
             if(StartBattle(roomNum, ref turnCount))
             {
-                LevelUp(turnCount);
-                ClimbLadder(roomNum++);
+                UpgradeStats(turnCount);
+                ClimbLadder(roomNum + 1);
             }
             _gameOver = true;
 
